@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories_array">
+        <item>Seksualiteit op de werkvloer</item>
+        <item>Overlijden</item>
+        <item>Werk-prive balans</item>
+    </string-array>
+    <string-array name="intensities_array">
+        <item>Laagdrempelig</item>
+        <item>Matig</item>
+        <item>Intens</item>
+    </string-array>
+</resources>

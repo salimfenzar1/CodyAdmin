@@ -49,7 +49,7 @@ Stellingen Toevoegen
    
 Stellingen Beheren
 1. **Open de lijst met bestaande stellingen.**
-2. **Selecteer een stelling om details te bekijken, te bewerken of te verwijderen.**
+2. **Selecteer een stelling om te verwijderen.**
 3. **Pas de benodigde wijzigingen aan en sla deze op om de database bij te werken.**
  
 ## Toestemmingen

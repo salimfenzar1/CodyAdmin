@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.codyadmin.Model.Statement;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         spinnerIntensity = findViewById(R.id.spinnerIntensity);
         buttonAddStatement = findViewById(R.id.buttonAddStatement);
         buttonChooseImage = findViewById(R.id.buttonChooseImage);
+        FloatingActionButton fabViewStatements = findViewById(R.id.fabViewStatements);
         db = FirebaseFirestore.getInstance();
 
         // Initialiseer de spinners
@@ -91,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
                 chooseImage();
             }
         });
+        fabViewStatements.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ViewStatementsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         buttonAddStatement.setOnClickListener(new View.OnClickListener() {
             @Override

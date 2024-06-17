@@ -63,5 +63,5 @@ De CodyAdmin-app vraagt om de volgende toestemmingen:
 
 Voor een efficiënte en veilige samenwerking hanteren we de volgende conventies voor het pushen van code:
 
-**Development Branch:** Alle nieuwe functies en wijzigingen moeten eerst naar de development branch worden gepusht. Zorg ervoor dat je code goed getest is voordat je een pull request indient.
-**Main Branch:** De main branch bevat de stabiele versie van de code. Pushen naar de main branch is alleen toegestaan vanuit de development branch na code review en goedkeuring van het team.
+- **Development Branch:** Alle nieuwe functies en wijzigingen moeten eerst naar de development branch worden gepusht. Zorg ervoor dat je code goed getest is voordat je een pull request indient.
+- **Main Branch:** De main branch bevat de stabiele versie van de code. Pushen naar de main branch is alleen toegestaan vanuit de development branch na code review en goedkeuring van het team.

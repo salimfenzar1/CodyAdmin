@@ -2,6 +2,7 @@ package com.example.codyadmin;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Uri selectedImageUri;
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,21 +81,39 @@ public class MainActivity extends AppCompatActivity {
 
         buttonChooseImage.setOnClickListener(v -> {
             Log.d("MainActivity", "Choose image button clicked");
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // Leg uit waarom toestemming nodig is
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    Toast.makeText(this, "Toestemming is nodig om afbeeldingen te kiezen", Toast.LENGTH_LONG).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Leg uit waarom toestemming nodig is
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
+                        Toast.makeText(this, "Toestemming is nodig om afbeeldingen te kiezen", Toast.LENGTH_LONG).show();
+                    }
+                    Log.d("MainActivity", "Requesting permission");
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_MEDIA_IMAGES},
+                            REQUEST_CODE_PERMISSIONS);
+                } else {
+                    Log.d("MainActivity", "Permission already granted");
+                    chooseImage();
                 }
-                Log.d("MainActivity", "Requesting permission");
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                        REQUEST_CODE_PERMISSIONS);
             } else {
-                Log.d("MainActivity", "Permission already granted");
-                chooseImage();
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Leg uit waarom toestemming nodig is
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        Toast.makeText(this, "Toestemming is nodig om afbeeldingen te kiezen", Toast.LENGTH_LONG).show();
+                    }
+                    Log.d("MainActivity", "Requesting permission");
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            REQUEST_CODE_PERMISSIONS);
+                } else {
+                    Log.d("MainActivity", "Permission already granted");
+                    chooseImage();
+                }
             }
         });
+
         fabViewStatements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +122,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonAddStatement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStatement(v);
+            }
+        });
+    
 
         buttonAddStatement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void chooseImage() {
         Log.d("MainActivity", "chooseImage called");
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_CODE_IMAGE);
     }
 

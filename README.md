@@ -51,6 +51,7 @@ Stellingen Beheren
 1. **Open de lijst met bestaande stellingen.**
 2. **Selecteer een stelling om te verwijderen.**
 3. **Pas de benodigde wijzigingen aan en sla deze op om de database bij te werken.**
+4. **Zodra je een stelling hebt verwijderd word deze niet direct in de Cody app verwijderd, om dit te bereiken moet je de opslag van de cody app wissen.**
  
 ## Toestemmingen
 De CodyAdmin-app vraagt om de volgende toestemmingen:

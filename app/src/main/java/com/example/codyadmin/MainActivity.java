@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 addStatement(v);
             }
         });
-    
+
 
         buttonAddStatement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addStatement(View view) {
+        buttonAddStatement.setEnabled(false); // Disable the button to prevent multiple clicks
         String description = editTextDescription.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString();
         String pictureName = editTextPictureName.getText().toString().trim(); // Haal de naam van de afbeelding op
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
             uploadImageToFirebase(selectedImageUri, description, category,pictureName, isActive, intensityLevel, view);
         } else {
             Snackbar.make(view, "Vul alle velden in en kies een afbeelding", Snackbar.LENGTH_LONG).show();
+            buttonAddStatement.setEnabled(false);
         }
     }
 

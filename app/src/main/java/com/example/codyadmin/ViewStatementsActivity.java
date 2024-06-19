@@ -92,7 +92,7 @@ public class ViewStatementsActivity extends AppCompatActivity {
                                 db.collection("statements").document(document.getId()).delete()
                                         .addOnSuccessListener(aVoid -> {
                                             statementList.remove(statement);
-                                            statementDescriptions.remove(statement.getDescription());
+                                            statementDescriptions.remove(statement.getPictureName());
                                             adapter.notifyDataSetChanged();
                                             Toast.makeText(ViewStatementsActivity.this, "Statement deleted", Toast.LENGTH_SHORT).show();
                                         })
@@ -101,6 +101,8 @@ public class ViewStatementsActivity extends AppCompatActivity {
                                             Log.e("ViewStatementsActivity", "Error deleting document", e);
                                         });
                             }
+                        } else {
+                            Log.e("ViewStatementsActivity", "Error finding document: ", task.getException());
                         }
                     });
         }

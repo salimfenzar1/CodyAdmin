@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextDescription;
     private EditText editTextPictureName;
 
+    private ProgressBar progressBar;
+
+
     private Spinner spinnerCategory, spinnerIntensity;
     private CheckBox checkBoxIsActive;
     private Button buttonAddStatement, buttonChooseImage;
@@ -59,9 +63,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialiseer de ProgressBar
+        progressBar = findViewById(R.id.progressBar);
+
+        // Andere initialisaties
         editTextDescription = findViewById(R.id.editTextDescription);
         spinnerCategory = findViewById(R.id.spinnerCategory);
-        editTextPictureName = findViewById(R.id.editTextPictureName); // Nieuw invoerveld
+        editTextPictureName = findViewById(R.id.editTextPictureName);
         spinnerIntensity = findViewById(R.id.spinnerIntensity);
         buttonAddStatement = findViewById(R.id.buttonAddStatement);
         buttonChooseImage = findViewById(R.id.buttonChooseImage);
@@ -84,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
                         != PackageManager.PERMISSION_GRANTED) {
-                    // Leg uit waarom toestemming nodig is
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
                         Toast.makeText(this, "Toestemming is nodig om afbeeldingen te kiezen", Toast.LENGTH_LONG).show();
                     }
@@ -99,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    // Leg uit waarom toestemming nodig is
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         Toast.makeText(this, "Toestemming is nodig om afbeeldingen te kiezen", Toast.LENGTH_LONG).show();
                     }
@@ -121,14 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        buttonAddStatement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addStatement(v);
-            }
-        });
-
 
         buttonAddStatement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void addStatement(View view) {
         buttonAddStatement.setEnabled(false); // Disable the button to prevent multiple clicks
+        progressBar.setVisibility(View.VISIBLE); // Show the progress bar
+
         String description = editTextDescription.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString();
         String pictureName = editTextPictureName.getText().toString().trim(); // Haal de naam van de afbeelding op
@@ -188,10 +188,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!description.isEmpty() && !category.isEmpty() && selectedImageUri != null) {
-            uploadImageToFirebase(selectedImageUri, description, category,pictureName, isActive, intensityLevel, view);
+            uploadImageToFirebase(selectedImageUri, description, category, pictureName, isActive, intensityLevel, view);
         } else {
             Snackbar.make(view, "Vul alle velden in en kies een afbeelding", Snackbar.LENGTH_LONG).show();
-            buttonAddStatement.setEnabled(false);
+            buttonAddStatement.setEnabled(true); // Enable the button again
+            progressBar.setVisibility(View.GONE); // Hide the progress bar
         }
     }
 
@@ -215,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception exception) {
                     Log.e("MainActivity", "Image upload failed", exception);
                     Snackbar.make(view, "Afbeelding uploaden mislukt", Snackbar.LENGTH_LONG).show();
+                    buttonAddStatement.setEnabled(true); // Enable the button again
+                    progressBar.setVisibility(View.GONE); // Hide the progress bar
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -224,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             String imageUrl = uri.toString();
-                            Statement statement = new Statement(description, category, imageUrl, isActive,pictureName, intensityLevel);
+                            Statement statement = new Statement(description, category, imageUrl, isActive, pictureName, intensityLevel);
 
                             db.collection("statements")
                                     .add(statement)
@@ -232,9 +235,13 @@ public class MainActivity extends AppCompatActivity {
                                         editTextDescription.setText("");
                                         editTextPictureName.setText(""); // Maak het invoerveld leeg
                                         Snackbar.make(view, "Statement toegevoegd", Snackbar.LENGTH_LONG).show();
+                                        buttonAddStatement.setEnabled(true); // Enable the button again
+                                        progressBar.setVisibility(View.GONE); // Hide the progress bar
                                     })
                                     .addOnFailureListener(e -> {
                                         Log.e("MainActivity", "Error adding statement", e);
+                                        buttonAddStatement.setEnabled(true); // Enable the button again
+                                        progressBar.setVisibility(View.GONE); // Hide the progress bar
                                     });
                         }
                     });
@@ -243,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Snackbar.make(view, "Afbeelding niet gevonden", Snackbar.LENGTH_LONG).show();
+            buttonAddStatement.setEnabled(true); // Enable the button again
+            progressBar.setVisibility(View.GONE); // Hide the progress bar
         }
     }
 }

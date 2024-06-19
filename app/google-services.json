@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "468221056413",
-    "project_id": "codycactusadmin",
-    "storage_bucket": "codycactusadmin.appspot.com"
+    "project_number": "687346570426",
+    "project_id": "codycactusavans-fdfeb",
+    "storage_bucket": "codycactusavans-fdfeb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:468221056413:android:0c0b0ef725aec211f3cb74",
+        "mobilesdk_app_id": "1:687346570426:android:e9ee6b567d15947f0d9e83",
         "android_client_info": {
-          "package_name": "com.example"
+          "package_name": "com.example.codyadmin"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC8x8ei-nc3s05G6pbcPyZY2-iq2UICIXM"
+          "current_key": "AIzaSyD-Eja_PJDzGhlrLBox-iale02gP0oqhMg"
         }
       ],
       "services": {
@@ -26,15 +26,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:468221056413:android:b265a2463e9d6507f3cb74",
+        "mobilesdk_app_id": "1:687346570426:android:8c4539b00393a5990d9e83",
         "android_client_info": {
-          "package_name": "com.example.codyadmin"
+          "package_name": "com.example.codycactus"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC8x8ei-nc3s05G6pbcPyZY2-iq2UICIXM"
+          "current_key": "AIzaSyD-Eja_PJDzGhlrLBox-iale02gP0oqhMg"
         }
       ],
       "services": {
